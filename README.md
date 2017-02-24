@@ -9,8 +9,14 @@ When the server is run, the apps are loaded and presented in the UI for inspecti
 
 Because this derives from [alexa-app-server](https://github.com/alexa-js/alexa-app-server), more information about configuration and running can be found visiting the github page.
 
+It is easiest to use this server with Alexa skills derived from [alexa-app-template](https://github.com/rickwargo/alexa-app-template).
+
 ## Installation
-To use the server, fork or clone the [project from github](https://github.com/rickwargo/alexa-app-root). 
+1. To use the server, fork or clone the [project from github](https://github.com/rickwargo/alexa-app-root).
+2. Create a directory called `alexa-js-apps` alongside the alexa-app-root directory to contain and server the Alexa skills. New skills can be derived from [alexa-app-template](https://github.com/rickwargo/alexa-app-template). 
+
+## Adding Skills
+The server reads all skills in the sibling directory `alexa-js-apps`. This directory must be created and placed next to the alexa-app-root directory.
 
 ### Enabling HTTPS
 If you have openssl installed, you can generate a self-signed certificate using:
