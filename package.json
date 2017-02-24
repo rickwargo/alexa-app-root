@@ -1,0 +1,53 @@
+{
+  "name": "alexa-app-root",
+  "version": "1.0.0-alpha.1",
+  "description": "Server root to use to develop Alexa skills using alexa-app-server and alexa-app",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha -c",
+    "start": "node server.js --start",
+    "build-css": "node-sass stylesheets/ -o public_html/css/",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rickwargo/alexa-app-root.git"
+  },
+  "keywords": [
+    "alexa",
+    "alexa-app",
+    "alexa-js",
+    "alexa-app-server",
+    "webstorm",
+    "template"
+  ],
+  "author": "Rick Wargo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rickwargo/alexa-app-root/issues"
+  },
+  "homepage": "https://github.com/rickwargo/alexa-app-root#readme",
+  "dependencies": {
+    "alexa-app-server": "github:alexa-js/alexa-app-server",
+    "bootstrap": "^4.0.0-alpha.6",
+    "pug": "^2.0.0-beta9"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "clipboard": "^1.5.16",
+    "gulp": "^3.9.1",
+    "gulp-env": "^0.4.0",
+    "gulp-help": "^1.6.1",
+    "gulp-istanbul": "^1.1.1",
+    "gulp-jslint": "^1.0.10",
+    "gulp-mocha": "^4.0.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-shell": "^0.6.1",
+    "gulp-sourcemaps": "^2.4.0",
+    "gulp-util": "^3.0.8",
+    "node-sass": "^4.5.0",
+    "nodemon": "^1.11.0",
+    "stream": "0.0.2"
+  }
+}

@@ -1,0 +1,462 @@
+doctype html
+html(lang='en')
+  head
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='Rick Wargo')
+    link(rel='icon', href='/favicon.ico')
+    title alexa-app-server root
+    // Bootstrap CSS
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css', integrity='sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ', crossorigin='anonymous')
+    // Custom styles for this template
+    link(href='/css/local.css', rel='stylesheet')
+  body
+    nav.navbar.fixed-top.navbar-toggleable-md.navbar-inverse.bg-inverse
+      button.navbar-toggler.navbar-toggler-right.hidden-lg-up(type='button', data-toggle='collapse', data-target='#navbarTop', aria-controls='navbarTop', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      a.navbar-brand(href='https://github.com/alexa-js', target='_blank')
+        img.d-inline-block.align-top(src='/images/alexa-logo.png', width='30', height='30', alt='alexa-js logo')
+        |  alexa-js
+      #navbarTop.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item.dropdown
+            a#dropdown01.nav-link.dropdown-toggle(href='http://localhost:8003/', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') apps
+            .dropdown-menu(aria-labelledby='dropdown01')
+              each app in apps
+                a.dropdown-item(id=app.name+'-menu-item', href='javascript:updateApp("' + app.name + '");') #{app.name}
+          li.nav-item
+            a#home-link.nav-link(href='/test') Home
+        ul.nav.navbar-nav
+          li.nav-item
+            a#schema-link.nav-link(href='#') Schema
+          li.nav-item
+            a#customslottypes-link.nav-link(href='#') Custom Slot Types
+          li.nav-item
+            a#utterances-link.nav-link(href='#') Utterances
+    .container-fluid
+      .row
+        nav#sidebar.col-sm-3.col-md-3.hidden-xs-down.bg-faded.sidebar
+          form(action='javascript:sendRequest();', method='POST')
+            .form-group
+              h5 Request Type
+              .form-check
+                label.form-check-label
+                  input#intentRadio.form-check-input(type='radio', name='requestTypeOptions', value='IntentRequest', checked=true)
+                  |  Intent Request
+              .form-check
+                label.form-check-label
+                  input#launchRadio.form-check-input(type='radio', name='requestTypeOptions', value='LaunchRequest')
+                  |  Launch Request
+              .form-check
+                label.form-check-label
+                  input#endedRadio.form-check-input(type='radio', name='requestTypeOptions', value='SessionEndedRequest')
+                  |  Session Ended Request
+            #session-group.form-group
+              h5 Session Values
+              label.form-check-label
+                input#session-new.form-check-input(type='checkbox', name='session-new', checked=true)
+                |  New?
+            #intent-group.form-group
+              h5 Intent
+              label(for='intent') Select Intent
+              select#intent.form-control
+                each intent in app.intentList
+                  option #{intent}
+            #slot-group.form-group
+              h5 Slot Values
+              label(for='slot-input') Slot
+              input#slot-input.form-control(type='text', placeholder='Enter value')
+            .form-group
+              button.btn.btn-primary.btn-success.float-right(type='submit') Submit
+        main.col-sm-9.offset-sm-3.col-md-9.offset-md-3.pt-3
+          .page-header
+            img#appIcon.rounded.float-left(src=app.icon)
+            h1#appname #{app.name}
+            span#appdescription
+              p.lead(style='padding-bottom: 20px;') #{app.description}
+          ul#tabs.nav.nav-tabs(role='tablist')
+            li#request-nav.nav-item.hidden
+              a.nav-link.active(data-toggle='tab', href='#request-content', role='tab') Request
+            li#session-nav.nav-item.hidden
+              a.nav-link(data-toggle='tab', href='#session-content', role='tab') Session
+            li#response-nav.nav-item.hidden.mr-auto
+              a.nav-link(data-toggle='tab', href='#response-content', role='tab') Response
+            li#schema-nav.nav-item.hidden.mr-auto
+              a.nav-link(data-toggle='tab', href='#schema-content', role='tab') Schema
+            li#customslottypes-nav.slottype-tab.hidden.nav-item.mr-auto
+              a.nav-link(data-toggle='tab', href='#customslottypes-content', role='tab') Custom Slot Types
+            li#utterances-nav.nav-item.hidden.mr-auto
+              a.nav-link(data-toggle='tab', href='#utterances-content', role='tab') Utterances
+            button#copy-btn.btn.btn-info.float-right Copy to Clipboard
+          .tab-content
+            #request-content.tab-pane.active(role='tabpanel')
+              pre
+            #session-content.tab-pane(role='tabpanel')
+              pre
+            #response-content.tab-pane(role='tabpanel')
+              pre
+            #schema-content.tab-pane(role='tabpanel')
+              pre
+            #customslottypes-content.slottype-content.tab-pane(role='tabpanel')
+              pre
+            #utterances-content.tab-pane(role='tabpanel')
+              pre
+    footer.footer
+      .container
+        span.text-muted Copyright &copy; Rick Wargo 2017
+    // jQuery first, then Tether, then Bootstrap JS.
+    //script(src='https://code.jquery.com/jquery-3.1.1.slim.min.js', integrity='sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n', crossorigin='anonymous')
+    script(src='https://code.jquery.com/jquery-3.1.1.min.js', integrity='sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=', crossorigin="anonymous")
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js', integrity='sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb', crossorigin='anonymous')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js', integrity='sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn', crossorigin='anonymous')
+    script(src='/js/clipboard.min.js')
+    script.
+      var clipboard = new Clipboard('#copy-btn.btn', {
+        text: function () {
+          return current.output();
+        }
+      });
+      clipboard.on('error', function (e) {
+        console.log(e);
+      });
+    script.
+      var tabnames = {
+        home: 'Home',
+        schema: 'Schema',
+        customslottypes: 'Custom Slot Types',
+        utterances: 'Utterances'
+      };
+    script.
+      var slotvalues = {};
+      var apps = !{JSON.stringify(apps)};
+      var current = {
+        app: null,
+        name: '',
+        action: '!{action}',
+        intent: '',
+        requestType: function() { return $('input[name=requestTypeOptions]:checked').val() },
+        session: {},
+        response: {},
+        schema: `!{schema}`,
+        customslottypes: `!{customslottypes}`,
+        utterances: `!{utterances}`,
+        tab: function() { return $('#tabs .nav-link.active')[0].innerText; },
+        request: function() { return getRequest(current.app); },
+        requestString: function() { return JSON.stringify(current.request(), null, 2); },
+        sessionString: function() { return JSON.stringify(current.session, null, 2); },
+        responseString: function() { return JSON.stringify(current.response, null, 2); },
+        responseTabOutput: function() {
+          switch (current.tab().toLowerCase()) {
+            case 'request':
+              return current.requestString();
+            case 'session':
+              return current.sessionString();
+            case 'response':
+              return current.responseString();
+            default:
+              return null;
+          }
+        },
+        output: function() {
+            switch (current.action) {
+                case 'home':
+                    return current.responseTabOutput();
+                case 'customslottypes':
+                    var slotType = current.tab().replace('-nav', '');
+                    var slotTypes = JSON.parse(current.customslottypes);
+                    return slotTypes[slotType].join('\n');
+                default:
+                    return current[current.action];
+            }
+        }
+      };
+    script.
+      function getAppFromName(appname) {
+        for (var i=0; i < apps.length; i++) {
+          if (apps[i].name === appname)
+            return apps[i];
+        }
+        return undefined;
+      }
+    script.
+      function toSlotId(slot) {
+        return 'slot-' + slot.replace(/[^A-Za-z0-9]/, '-').toLowerCase() + '-input';
+      }
+      function getRequest(app) {
+        var request = {
+          "session": {
+            "sessionId": app.sessionId,
+            "application": {
+              "applicationId": app.appId
+            },
+            "attributes": {},
+            "user": {
+              "userId": app.userId
+            }
+          },
+          "context": {
+            "System": {
+              "application": {
+                "applicationId": app.appId
+              },
+              "user": {
+                "userId": app.userId
+              },
+              "device": {
+                "supportedInterfaces": {
+                  "AudioPlayer": {}
+                }
+              }
+            },
+            "AudioPlayer": {
+              "offsetInMilliseconds": 0,
+              "playerActivity": "IDLE"
+            }
+          },
+          "request": {
+            "type": current.requestType(),
+            "requestId": app.requestId,
+            "locale": app.locale,
+            "timestamp": new Date().toISOString()
+          },
+          "version": "1.0"
+        };
+        if (current.requestType() === 'IntentRequest') {
+          request.session.new = $('input#session-new')[0].checked;
+          request.request.intent = {
+            "name": current.intent,
+            "slots": {}
+          }
+          if (app.intents[current.intent] && app.intents[current.intent].schema) {
+            for (var slot in app.intents[current.intent].schema.slots) {
+              request.request.intent.slots[slot] = {};
+              request.request.intent.slots[slot].name = slot;
+              var value = $('input[id='+toSlotId(slot)+']').val();
+              request.request.intent.slots[slot].value = value;
+              // Save value for future restoration
+              slotvalues[current.app.name + '.' + current.intent + '.' + slot + ': ' + app.intents[current.intent].schema.slots[slot]] = value;
+            }
+          }
+        }
+        if (current.requestType() === 'SessionEndedRequest') {
+          request.session.new = false;
+          request.reason = 'USER_INITIATED';
+        }
+        if (current.requestType() === 'LaunchRequest') {
+          request.session.new = true;
+        }
+        request.session.attributes = current.session;
+        return request;
+      }
+    script.
+      function updateRequest() {
+        $('#request-content pre')[0].innerText = current.requestString();
+        $('#request-nav, #session-nav, #response-nav').show();
+        $('#schema-nav, #customslottypes-nav, #utterances-nav').hide();
+
+        // Select the appropriate tab based on action
+        $('#tabs a[href="#request-content"]').tab('show');
+        $('#navbarTop .nav-link').removeClass('active');
+        $('#home-link').tab('show');
+      }
+    script.
+      function updateIntent(app, intent) {
+        current.intent = intent;
+
+        // remove the slots
+        $('#slot-group label').remove();
+        $('#slot-group input').remove();
+        var slotgroup = $('#slot-group')[0];
+        var slotCount = 0;
+        if (app.intents[intent] && app.intents[intent].schema) {
+          for (var slot in app.intents[intent].schema.slots) {
+            // Build an input and label for each slot
+            var label = document.createElement("label");
+            label.htmlFor = toSlotId(slot);
+            label.innerText = slot + ': ' + app.intents[intent].schema.slots[slot];
+            slotgroup.appendChild(label);
+
+            var input = document.createElement("input");
+            input.id = toSlotId(slot);
+            input.className = 'form-control';
+            input.type = 'text';
+            input.placeholder = 'Enter ' + slot.toLowerCase() + ' value';
+
+            // Default the slot with previous value if available
+            if (slotvalues[current.app.name + '.' + intent + '.' + slot + ': ' + app.intents[intent].schema.slots[slot]])
+              input.value = slotvalues[current.app.name + '.' + intent + '.' + slot + ': ' + app.intents[intent].schema.slots[slot]];
+
+            // Handle slot changes - update request
+            input.oninput = function () { updateRequest(); };
+            input.onpropertychange = input.oninput; // for IE8
+            slotgroup.appendChild(input);
+            slotCount++;
+          }
+        }
+        if (slotCount)
+          $('#slot-group h5').show();
+        else
+          $('#slot-group h5').hide();
+
+        updateRequest();
+      }
+    script.
+      function updateApp(appName) {
+        current.app = getAppFromName(appName);
+
+        // Update the app header
+        $('h1#appname')[0].innerText = current.app.name;
+        $('span#appdescription p')[0].innerText = current.app.description;
+        $('img#appIcon')[0].src = current.app.icon;
+
+        // Updates the top links
+        $('#home-link')[0].href = '/test/' + appName;
+        $('#schema-link')[0].href = '/test/' + appName + '/schema';
+        $('#customslottypes-link')[0].href = '/test/' + appName + '/customslottypes';
+        $('#utterances-link')[0].href = '/test/' + appName + '/utterances';
+
+        // highlight the menu item
+        $('.dropdown-item').removeClass('active');
+        $('#' + appName + '-menu-item').addClass('active');
+
+        // Update the set of intents, start by removing existing intents
+        var selectIntent = $('select[id=intent]')[0];
+        for (var i=selectIntent.options.length-1; i >= 0; i--) {
+          selectIntent.remove(i);
+        }
+        // And add new ones
+        var firstIntent;
+        for (var i=0; i < current.app.intentList.length; i++)  {
+          var intent = current.app.intentList[i];
+          var opt = document.createElement("option");
+          opt.value = intent;
+          opt.innerHTML = intent;
+
+          // then append it to the select element
+          selectIntent.appendChild(opt);
+        }
+        var opt = document.createElement("option");
+        opt.value = "Unknown Intent (for Testing)";
+        opt.innerHTML = opt.value;
+        selectIntent.appendChild(opt);
+
+        // Update intent-related information
+        updateIntent(current.app, current.app.intentList[0]);
+      }
+    script.
+      function updateResponse(response) {
+        current.session = response.sessionAttributes;
+        current.response = response.response;
+
+        $('#session-content pre')[0].innerText = JSON.stringify(current.session, null, 2);
+        $('#response-content pre')[0].innerText = JSON.stringify(current.response, null, 2);
+        $('#tabs a[href="#response-content"]').tab('show');
+      }
+    script.
+      function sendRequest() {
+        $.ajax({
+          url: '/alexa/' + current.app.name,
+          type: 'POST',
+          data: current.requestString(),
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          success: updateResponse
+        });
+      }
+    script.
+      // Handle request type change
+      $('input[name=requestTypeOptions]').on('change', function () {
+        // Show/hide intent-related options based on request type
+        if (current.requestType() === 'IntentRequest') {
+          $('div[id=intent-group]').show();
+          $('div[id=slot-group]').show();
+          $('div[id=session-group]').show();
+        } else {
+          $('div[id=intent-group]').hide();
+          $('div[id=slot-group]').hide();
+          $('div[id=session-group]').hide();
+        }
+
+        // Request type changed so update intent and request
+        if (current.requestType() === 'IntentRequest')
+          updateIntent(current.app, current.intent);  // also updates request
+        else
+          updateRequest();
+      });
+
+      // Handle intent change
+      $('select[id=intent]').on('change', function () {
+        updateIntent(current.app, $(this)[0].value);
+      });
+
+      // Handle session Value change
+      $('input[id=session-new]').on('click', function() {
+        updateRequest();
+      });
+    script.
+      // Initialize environment
+      updateApp('!{currentAppName}');
+
+      // Based on which view was selected: /:appname, /schema, /customslottypes, /utterances
+      if (current.action === 'home') {
+        // Show/hide main tabs based on action
+        $('#request-nav, #session-nav, #response-nav').show();
+        $('#schema-nav, #customslottypes-nav, #utterances-nav').hide();
+
+        // Select the appropriate tab based on action
+        $('#tabs a[href="#request-content"]').tab('show');
+        //$('#' + current.action + '-content.tab-pane pre')[0].innerText = current.output();
+      } else if (current.action === 'customslottypes') {
+        $('#request-nav, #session-nav, #response-nav').hide();
+        $('#schema-nav, #customslottypes-nav, #utterances-nav').hide();
+        $('#' + current.action + '-nav').show();
+        $('#' + current.action + '-nav a')[0].innerText = tabnames[current.action];
+        $('#tabs a[href="#' + current.action + '-content"]').tab('show');
+        var output = '';
+        try {
+          var tab;
+          var slotTypes = JSON.parse(current.customslottypes);
+          $('.slottype-tab, .slottype-content').remove();
+          for (var slotType in slotTypes) {
+            var content = document.createElement('div');
+            content.className = 'tab-pane slottype-content';
+            content.id = slotType + '-content';
+            content.setAttribute('role', 'tabpanel');
+            var pre = document.createElement('pre');
+            pre.innerHTML = slotTypes[slotType].join('\n');
+            content.appendChild(pre);
+            $('#utterances-content').before(content);
+
+            tab = document.createElement('li');
+            tab.className = 'nav-item slottype-tab';
+
+            var link = document.createElement('a');
+            link.className = 'nav-link';
+            link.setAttribute('data-toggle', 'tab');
+            link.setAttribute('role', 'tab');
+            link.setAttribute('href', '#' + slotType + '-content');
+            link.innerText = slotType;
+            tab.appendChild(link);
+            $('ul #copy-btn').before(tab);
+          }
+          tab.className += ' mr-auto';
+          $('ul#tabs .slottype-tab a:first').tab('show');
+        } catch (exc) {
+          //console.error(exc);
+        }
+      } else {
+        // Show/hide main tabs based on action
+        $('#request-nav, #session-nav, #response-nav').hide();
+        $('#schema-nav, #customslottypes-nav, #utterances-nav').hide();
+        $('#' + current.action + '-nav').show();
+
+        // Select the appropriate tab based on action
+        $('#' + current.action + '-nav a')[0].innerText = tabnames[current.action];
+        $('#tabs a[href="#' + current.action + '-content"]').tab('show');
+
+        $('#' + current.action + '-content.tab-pane pre')[0].innerHTML = current.output();
+      }
+      $('#navbarTop .nav-link').removeClass('active');
+      $('#' + current.action + '-link').tab('show');

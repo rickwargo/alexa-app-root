@@ -1,0 +1,132 @@
+
+$footer-height: 40px;
+
+.bg-inverse {
+  background-color: #060d5d !important;
+}
+
+.bg-faded {
+  background-color: #e5e8ff;
+}
+
+img#appIcon {
+  width: 108px;
+  height: 108px;
+  margin-right: 20px;
+}
+
+h1#appname {
+  padding-top: 20px;
+}
+
+#slot-group input {
+  margin-bottom: 10px;
+}
+
+#copy-btn {
+  font-size: 0.8em !important;
+}
+
+/*
+ * Base structure
+ */
+html {
+  position: relative;
+  min-height: 100%;
+}
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+
+  /* Margin bottom by footer height */
+  margin-bottom: $footer-height;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: $footer-height;
+  line-height: $footer-height; /* Vertically center the text there */
+  //background-color: #f0f1ff;
+  background: linear-gradient(to right, #e5e8ff, #f0f1ff);
+  z-index: 1100;
+  text-align: right;
+}
+
+body > .container {
+  padding: 60px 15px 0;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+/*
+ * Typography
+ */
+
+h1 {
+  color: #060d5d;
+}
+
+.lead {
+  color: #060d5d;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 56px;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 0px;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  border-right: 1px solid #eee;
+
+  h5 {
+    background: linear-gradient(to right, #d6dbff, #e5e8ff);
+    padding: 8px 12px;
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+}
+
+/* Sidebar navigation */
+.sidebar {
+  padding-left: 20px;
+  padding-right: 20px;
+
+  .nav {
+    margin-bottom: 20px;
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .nav-item + .nav-item {
+    margin-left: 0;
+  }
+
+  .nav-link {
+    border-radius: 0;
+  }
+}
+
+/* Placeholders */
+.placeholders {
+  padding-bottom: 3rem;
+
+  img {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
