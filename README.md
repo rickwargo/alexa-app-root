@@ -58,7 +58,7 @@ npm start
 ## Usage
 If planning to use HTTPS, you'll need to generate a self-signed x509 certificate for the server and place the files in `sslcert`. The gulp task `make-cert` will create the certificate for you, assuming openssl is installed. If you do create a self-signed certificate, the browser will issue a warning when browsing to a page that uses that certificate.
 
-To test intents browse to http://localhost:8003/test or ( https://localhost:8443/test ).
+To test intents browse to [http://localhost:8003/test](http://localhost:8003/test) or [https://localhost:8443/test](https://localhost:8443/test).
 
 ## Enhancing the Base Release
 ### CSS Files
