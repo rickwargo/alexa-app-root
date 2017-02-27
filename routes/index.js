@@ -21,8 +21,12 @@ router.get(['/test'], function (ignore, res) {
     var apps = require('../lib/getapps')();
     res.render('index.pug', {
         apps: apps,
-        app: apps[0],
-        currentAppName: apps[0].name,
+        app: apps.length >= 1
+            ? apps[0]
+            : null,
+        currentAppName: apps.length >= 1
+            ? apps[0].name
+            : null,
         action: 'home'
     });
 });

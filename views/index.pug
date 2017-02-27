@@ -24,8 +24,9 @@ html(lang='en')
           li.nav-item.dropdown
             a#dropdown01.nav-link.dropdown-toggle(href='http://localhost:8003/', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') apps
             .dropdown-menu(aria-labelledby='dropdown01')
-              each app in apps
-                a.dropdown-item(id=app.name+'-menu-item', href='javascript:updateApp("' + app.name + '");') #{app.name}
+              if apps
+                each app in apps
+                  a.dropdown-item(id=app.name+'-menu-item', href='javascript:updateApp("' + app.name + '");') #{app.name}
           li.nav-item
             a#home-link.nav-link(href='/test') Home
         ul.nav.navbar-nav
@@ -62,8 +63,9 @@ html(lang='en')
               h5 Intent
               label(for='intent') Select Intent
               select#intent.form-control
-                each intent in app.intentList
-                  option #{intent}
+                if app
+                  each intent in app.intentList
+                    option #{intent}
             #slot-group.form-group
               h5 Slot Values
               label(for='slot-input') Slot
@@ -72,10 +74,15 @@ html(lang='en')
               button.btn.btn-primary.btn-success.float-right(type='submit') Submit
         main.col-sm-9.offset-sm-3.col-md-9.offset-md-3.pt-3
           .page-header
-            img#appIcon.rounded.float-left(src=app.icon)
-            h1#appname #{app.name}
-            span#appdescription
-              p.lead(style='padding-bottom: 20px;') #{app.description}
+            if app
+              img#appIcon.rounded.float-left(src=app.icon)
+              h1#appname #{app.name}
+              span#appdescription
+                p.lead(style='padding-bottom: 20px;') #{app.description}
+            else
+              h1#appname No Apps Available
+              span#appdescription
+                p.lead(style='padding-bottom: 20px;') There are no available Alexa skills to load
           ul#tabs.nav.nav-tabs(role='tablist')
             li#request-nav.nav-item.hidden
               a.nav-link.active(data-toggle='tab', href='#request-content', role='tab') Request
@@ -305,6 +312,9 @@ html(lang='en')
     script.
       function updateApp(appName) {
         current.app = getAppFromName(appName);
+        if (!current.app) {
+          return;
+        }
 
         // Update the app header
         $('h1#appname')[0].innerText = current.app.name;
