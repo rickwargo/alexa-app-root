@@ -59,9 +59,7 @@ gulp.task('lint', 'Lints all server side js', function () {
 
 gulp.task('test-mock', 'Run unit tests against local server **', function () {
     var result,
-        envs = env.set({
-            SERVER: 'Local'
-        });
+        envs = env.set({});
 
     result = gulp.src(filePaths.unitTestFiles)
         .pipe(envs)
